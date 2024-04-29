@@ -4,44 +4,67 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 from .serializers import InstagramUserSerializer
 from .models import InstagramUser
-from instabot import Bot
 import requests
 import config
-import os
-import glob
-class InstagramChecker(APIView):
-    pass
+class InstagramChecker(generics.ListCreateAPIView):
+    queryset = InstagramUser.objects.all()
+    serializer_class = InstagramUserSerializer
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        serializer = InstagramUserSerializer(data={'username': username})
+        if serializer.is_valid():
+            serializer.save()
+        #############   followers
+            url = config.url_followers
+            querystring = {"username_or_id_or_url": username}
+            headers = {
+                config.x_key: config.API_KEY,
+                config.x_host: config.API_X
+            }
+            response = requests.get(url, headers=headers, params=querystring)
+            followers_count = response.json()['data']['total']
+            followers_lst = []
+            for item in response.json()['data']['items']:
+                followers_lst.append(item['username'])
+        #############  followings
+            url = config.url_followings
+            querystring = {"username_or_id_or_url": username}
+            headers = {
+                config.x_key: config.API_KEY,
+                config.x_host: config.API_X
+            }
+            response = requests.get(url, headers=headers, params=querystring)
+            followings_count = response.json()['data']['total']
+            followings_lst = []
+            for item in response.json()['data']['items']:
+                followings_lst.append(item['username'])
+            print(followers_count, followers_lst, followings_count, followings_lst)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
 class InstagramCheckUser(APIView):
-
-   pass
-
-class InstagramGetFollowers(APIView):
     def get(self, request, *args, **kwargs):
-        username = kwargs.get('user')
-        url = "https://instagram-scraper-api2.p.rapidapi.com/v1/followers"
-        querystring = {"username_or_id_or_url": username}
-        headers = {
-            "X-RapidAPI-Key": "e57077f1acmsh2b2d59c7b485939p194b13jsn90d518207444",
-            "X-RapidAPI-Host": "instagram-scraper-api2.p.rapidapi.com"
-        }
+        username = kwargs.get('username')
+        existing_user = InstagramUser.objects.filter(username=username).exists()
+        if existing_user:
 
-        response = requests.get(url, headers=headers, params=querystring)
 
-        return JsonResponse({'followers': response.json()})
+
+
+            pass
+        else:
+            return Response({'message': 'Username does not exists in our db make sure to go '}, status=status.HTTP_400_BAD_REQUEST)
+class InstagramGetFollowers(APIView):
+    pass
 
 class InstagramGetFollowings(APIView):
-    def get(self, request, *args, **kwargs):
-        username = kwargs.get('user')
-        url = "https://instagram-scraper-api2.p.rapidapi.com/v1/following"
-        querystring = {"username_or_id_or_url": username}
-        headers = {
-            "X-RapidAPI-Key": "e57077f1acmsh2b2d59c7b485939p194b13jsn90d518207444",
-            "X-RapidAPI-Host": "instagram-scraper-api2.p.rapidapi.com"
-        }
-
-        response = requests.get(url, headers=headers, params=querystring)
-
-        return JsonResponse({'followings': response.json()})
+    pass
 class AllCheckedUsers(APIView):
     def get(self, request, *args, **kwargs):
         queryset = InstagramUser.objects.all()
