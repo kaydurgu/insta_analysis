@@ -38,7 +38,41 @@ class InstagramChecker(generics.ListCreateAPIView):
             followings_lst = []
             for item in response.json()['data']['items']:
                 followings_lst.append(item['username'])
-            print(followers_count, followers_lst, followings_count, followings_lst)
+
+        ######################### info
+            url = config.url_info
+            querystring = {"username_or_id_or_url": username}
+            headers = {
+                config.x_key: config.API_KEY,
+                config.x_host: config.API_X
+            }
+            response = requests.get(url, headers=headers, params=querystring)
+            country = response.json()['data'].get('about').get('country')
+            bio = response.json()['data']['biography']
+            full_name = response.json()['data']['full_name']
+            is_private = response.json()['data']['is_private']
+
+        ##################### posts
+            url = config.url_posts
+            querystring = {"username_or_id_or_url": username}
+            headers = {
+                config.x_key: config.API_KEY,
+                config.x_host: config.API_X
+            }
+            response = requests.get(url, headers=headers, params=querystring)
+            max_comments = 0
+            max_commented_post_code = ''
+            max_likes = 0
+            max_liked_post_code = ''
+            for post in response.json()['data']['items']:
+                if max_likes < post['like_count']:
+                    max_likes = post['like_count']
+                    max_liked_post_code = post['code']
+                if max_comments < post['comment_count']:
+                    max_comments = post['comment_count']
+                    max_commented_post_code = post['code']
+                print(post['comment_count'], post['like_count'], post['code'])
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
