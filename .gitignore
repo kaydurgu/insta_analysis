@@ -1,0 +1,10 @@
+# Ignore Python bytecode files
+*.pyc
+__pycache__
+
+# Ignore configuration files with sensitive information
+config.py
+
+# Ignore virtual environment directories (if you're using virtual environments)
+venv/
+env/
