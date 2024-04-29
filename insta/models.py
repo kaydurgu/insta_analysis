@@ -10,6 +10,9 @@ class InstagramUser(models.Model):
 class InstagramUserProfile(models.Model):
 
     user = models.ForeignKey(InstagramUser, on_delete=models.CASCADE)
+    profile_pic_link = models.CharField(max_length=255)
+    is_private = models.BooleanField(default=False)
+    full_name = models.CharField(max_length=255)
     datatime = models.DateTimeField(auto_created=True)
     followers_count = models.IntegerField(default=0)
     following_count = models.IntegerField(default=0)
@@ -24,7 +27,7 @@ class InstagramUserPosts(models.Model):
     most_liked_post = models.CharField(max_length=255, blank=True)
     most_commented_post = models.CharField(max_length=255, blank=True)
 
-class InstagramPostFriends(models.Model):
+class InstagramUserFriends(models.Model):
 
     user = models.ForeignKey(InstagramUser, on_delete=models.CASCADE)
     user_following_but_not_followed_list = models.TextField(blank=True)
