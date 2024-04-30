@@ -17,8 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
+from rest_framework.schemas import get_schema_view
+from .yasg import urlpatterns as doc_urls
 
 urlpatterns = [
+    path('api_schema', get_schema_view(title='Insta analys'), name='api-schema'),
     path('admin/', admin.site.urls),
     path('api/', include('insta.urls')),
 ]
+
+urlpatterns += doc_urls

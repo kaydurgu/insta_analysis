@@ -12,6 +12,5 @@ urlpatterns = [
     path('check/<str:user>/not_followed_back', InstagramUserGetNotFollowedBack.as_view()),
     path('check/<str:user>/not_following_back',InstagramUserGetNotFollowingBack.as_view()),
     path('check/<str:user>/mutual_following', InstagramUserGetMutualFollowing.as_view()),
-
     path('all_checked_users/', AllCheckedUsers.as_view()),
 ]
