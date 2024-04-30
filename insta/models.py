@@ -9,7 +9,7 @@ class InstagramUser(models.Model):
 
 class InstagramUserProfile(models.Model):
 
-    user = models.ForeignKey(InstagramUser, on_delete=models.CASCADE)
+    user = models.CharField(max_length=255)
     profile_pic_link = models.CharField(max_length=255)
     country = models.CharField(max_length=255, default=None)
     biography = models.CharField(max_length=255, default=None)
@@ -23,14 +23,14 @@ class InstagramUserProfile(models.Model):
 
 class InstagramUserPosts(models.Model):
 
-    user = models.ForeignKey(InstagramUser, on_delete=models.CASCADE)
+    user = models.CharField(max_length=255)
     posts_count = models.IntegerField(default=0)
     most_liked_post = models.CharField(max_length=255, blank=True)
     most_commented_post = models.CharField(max_length=255, blank=True)
 
 class InstagramUserFriends(models.Model):
 
-    user = models.ForeignKey(InstagramUser, on_delete=models.CASCADE)
-    user_following_but_not_followed_list = models.TextField(blank=True)
-    user_followed_but_not_following_list = models.TextField(blank=True)
+    user = models.CharField(max_length=255)
+    not_followed_back = models.TextField(blank=True)
+    not_following_back = models.TextField(blank=True)
     mutual_list = models.TextField(blank=True)
