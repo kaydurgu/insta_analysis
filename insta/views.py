@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
-from .serializers import InstagramUserSerializer
+from .serializers import InstagramUserSerializer, InstagramUserProfileSerializer, InstagramUserFollowersSerializer, InstagramUserFollowingSerializer, InstagramUserMostLikedPost, InstagramUserMostCommentedPost, InstagramUserNotFollowingBack, InstagramUserNotFollowedBack, InstagramUserMutualFollowing, InstagramUserPostsSerializer
 from .models import InstagramUser, InstagramUserProfile, InstagramUserPosts, InstagramUserFriends
 import requests
 import config
@@ -115,8 +115,8 @@ class InstagramChecker(generics.ListCreateAPIView):
             instagram_user_post = InstagramUserPosts.objects.create(
                 user=username,
                 posts_count=post_count,
-                most_liked_post='https://www.instagram.com/p/{max_liked_post_code}/',
-                most_commented_post='https://www.instagram.com/p/{max_commented_post_code}/',
+                most_liked_post='https://www.instagram.com/p/{val}/'.format(val=max_liked_post_code),
+                most_commented_post='https://www.instagram.com/p/{val}/'.format(val=max_commented_post_code),
             )
             instagram_user_profile.save()
             instagram_user_post.save()
@@ -140,22 +140,80 @@ class InstagramChecker(generics.ListCreateAPIView):
 class InstagramCheckUser(APIView):
     def get(self, request, user):
         try:
-            user_obj = InstagramUser.objects.get(username=user)
-            return Response({'followers': 'vrode vse zaebis'}, status=status.HTTP_200_OK)
+            user_obj = InstagramUserProfile.objects.get(user=user)
+            serializer = InstagramUserProfileSerializer(user_obj)
+            return Response(serializer.data)
+        except InstagramUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+class InstagramCheckUserPost(APIView):
+    def get(self, request, user):
+        try:
+            user_obj = InstagramUserPosts.objects.get(user=user)
+            serializer = InstagramUserPostsSerializer(user_obj)
+            return Response(serializer.data)
         except InstagramUser.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 class InstagramGetFollowers(APIView):
     def get(self, request, user):
         try:
-            user_obj = InstagramUser.objects.get(username=user)
-            return Response({'followers': 'vrode vse zaebis'}, status=status.HTTP_200_OK)
+            user_obj = InstagramUserProfile.objects.get(user=user)
+            serializer = InstagramUserFollowersSerializer(user_obj)
+            return Response(serializer.data)
         except InstagramUser.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 class InstagramGetFollowings(APIView):
-    pass
+    def get(self, request, user):
+        try:
+            user_obj = InstagramUserProfile.objects.get(user=user)
+            serializer = InstagramUserFollowingSerializer(user_obj)
+            return Response(serializer.data)
+        except InstagramUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class InstagramGetMostLikedPost(APIView):
+    def get(self, request, user):
+        try:
+            user_obj = InstagramUserPosts.objects.get(user=user)
+            serializer = InstagramUserMostLikedPost(user_obj)
+            return Response(serializer.data)
+        except InstagramUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class InstagramGetMostCommentedPost(APIView):
+    def get(self, request, user):
+        try:
+            user_obj = InstagramUserPosts.objects.get(user=user)
+            serializer = InstagramUserMostCommentedPost(user_obj)
+            return Response(serializer.data)
+        except InstagramUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 class AllCheckedUsers(APIView):
     def get(self, request, *args, **kwargs):
-        queryset = InstagramUser.objects.all()
-        serializer = InstagramUserSerializer(queryset, many=True)
+        queryset = InstagramUserProfile.objects.all()
+        serializer = InstagramUserProfileSerializer(queryset, many=True)
         return Response(serializer.data)
+class InstagramUserGetNotFollowingBack(APIView):
+    def get(self, request, user):
+        try:
+            user_obj = InstagramUserFriends.objects.get(user=user)
+            serializer = InstagramUserNotFollowingBack(user_obj)
+            return Response(serializer.data)
+        except InstagramUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+class InstagramUserGetNotFollowedBack(APIView):
+    def get(self, request, user):
+        try:
+            user_obj = InstagramUserFriends.objects.get(user=user)
+            serializer = InstagramUserNotFollowedBack(user_obj)
+            return Response(serializer.data)
+        except InstagramUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+class InstagramUserGetMutualFollowing(APIView):
+    def get(self, request, user):
+        try:
+            user_obj = InstagramUserFriends.objects.get(user=user)
+            serializer = InstagramUserMutualFollowing(user_obj)
+            return Response(serializer.data)
+        except InstagramUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
