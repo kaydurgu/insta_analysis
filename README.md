@@ -34,12 +34,12 @@ The application exposes the following API endpoints for interacting with the sys
 - `GET /check/{user}/info`: Retrieve detailed information about the specified user's profile.
 - `GET /check/{user}/most_commented_post`: Retrieve the most commented post of the specified user.
 - `GET /check/{user}/most_liked_post`: Retrieve the most liked post of the specified user.
-- `GET /check/{user}/mutual_following`: Retrieve the list of mutual followers between the specified user and the authenticated user.
+- `GET /check/{user}/mutual_following`: Retrieve the list of mutual following the specified user .
 - `GET /check/{user}/not_followed_back`: Retrieve the list of users who are not followed back by the specified user.
 - `GET /check/{user}/not_following_back`: Retrieve the list of users whom the specified user is not following back.
 - `GET /check/{user}/most_liking_friend`: Retrieve the username of the friend who liked the most posts of the specified user.
 - `GET /check/{user}/most_commenting_friend`: Retrieve the username of the friend who commented the most posts of the specified user.
-- `GET /check/{user}/posts`: Retrieve a list of posts made by the specified user.
+- `GET /check/{user}/posts`: Retrieve posts info made by the specified user.
 
 ## Implementation Details
 
@@ -49,6 +49,42 @@ The application exposes the following API endpoints for interacting with the sys
 
 ## Screenshots and Video Demonstration
 
+API all enpoints
+
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_11.png)
+
+- `GET /check/{user}/info`: Retrieve detailed information about the specified user's profile.
+
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_12.png)
+
+- `GET /check/{user}/followers`: Retrieve the list of followers for a specified user.
+
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_13.png)
+
+- `GET /check/{user}/following`: Retrieve the list of users followed by the specified user.
+
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_14.png)
+
+- `GET /check/{user}/most_commented_post`: Retrieve the most commented post of the specified user.
+
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_15.png)
+
+- `GET /check/{user}/most_liked_post`: Retrieve the most liked post of the specified user.
+
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_16.png)
+
+- `GET /check/{user}/mutual_following`: Retrieve the list of mutual following the specified user .
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_17.png)
+
+
+- `GET /check/{user}/not_followed_back`: Retrieve the list of users who are not followed back by the specified user.
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_18.png)
+
+- `GET /check/{user}/not_following_back`: Retrieve the list of users whom the specified user is not following back.
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_19.png)
+
+- `GET /check/{user}/posts`: Retrieve posts info made by the specified user.
+![Image Description](https://github.com/kaydurgu/insta_analysis/blob/main/imgs/Screenshot_20.png)
 
 ## Getting Started
 
