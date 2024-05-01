@@ -54,7 +54,7 @@ class InstagramChecker(generics.ListCreateAPIView):
             profile_pic = response.json()['data']['profile_pic_url']
         #############   followers
             url = config.url_followers
-            querystring = {"username_or_id_or_url": username}
+            querystring = {"username_or_id_or_url": username,}
             headers = {
                 config.x_key: config.API_KEY,
                 config.x_host: config.API_X
@@ -66,7 +66,7 @@ class InstagramChecker(generics.ListCreateAPIView):
                 followers_lst.append(item['username'])
         #############  followings
             url = config.url_followings
-            querystring = {"username_or_id_or_url": username}
+            querystring = {"username_or_id_or_url": username,}
             headers = {
                 config.x_key: config.API_KEY,
                 config.x_host: config.API_X
