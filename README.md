@@ -2,8 +2,6 @@
 
 This project is a Django-based web application that allows users to analyze Instagram profiles by providing a username. It utilizes the Instagram API to gather information about the specified user and presents various analytics and insights about their profile.
 
-**This project was developed as a part of the Thesis diploma work, situational task 2.**
-
 
 ## System Architecture
 
